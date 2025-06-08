@@ -1,0 +1,3 @@
+hidden_dim: 768
+output_dim: 32
+num_layers: 0

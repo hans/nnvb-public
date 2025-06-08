@@ -1,0 +1,47 @@
+storage:
+    provider = "http"
+
+
+LIBRISPREECH_URL_FORMAT = "https://www.openslr.org/resources/12/{split}.tar.gz"
+LIBRISPEECH_ALIGNMENTS_URL = "https://zenodo.org/records/2619474/files/librispeech_alignments.zip?download=1"
+
+
+rule download_librispeech_raw:
+    input:
+        lambda wildcards: storage.http(LIBRISPREECH_URL_FORMAT.format(split=wildcards.split)),
+    output:
+        directory("data/librispeech/{split}")
+    shell:
+        """
+        mkdir {output} && tar -xzf {input} -C {output}
+
+        # convert to 16khz mono
+        find {output} -name "*.flac" -print0 | \
+            parallel --bar -0 "ffmpeg -hide_banner -loglevel error -i {{}} -acodec pcm_s16le -ac 1 -ar 16000 {{.}}.wav && rm {{}}"
+        """
+
+
+rule download_librispeech_alignments:
+    input: storage.http(LIBRISPEECH_ALIGNMENTS_URL),
+    output: "data/librispeech_alignments"
+    shell: "unzip -d {output} {input}"
+
+
+rule preprocess_librispeech:
+    input:
+        dataset = "data/librispeech/{split}",
+        alignments = "data/librispeech_alignments",
+        notebook = "notebooks/preprocessing/librispeech.ipynb",
+    output:
+        data_path = directory("outputs/preprocessed_data/librispeech-{split}"),
+        notebook_path = "outputs/preprocessing/librispeech-{split}/notebook.ipynb",
+
+    run:
+        shell("""
+        papermill --log-output {input.notebook} \
+            {output.notebook_path} \
+            -p split {wildcards.split} \
+            -p data_dir {input.dataset} \
+            -p alignment_dir {input.alignments} \
+            -p out_path {output.data_path}
+        """)

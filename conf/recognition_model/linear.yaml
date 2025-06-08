@@ -1,0 +1,19 @@
+embeddings:
+  featurization: ['mean_within_cut', 'phoneme']
+
+model:
+  type: linear
+
+optimizer:
+  lr: 1e-1
+
+evaluation:
+  keep_top_k: 20000
+  subsample_instances: 50
+  min_instances_per_label: 50
+
+  num_stratified_splits: 3
+
+  num_train_epochs: 50
+  train_batch_size: 256
+  eval_batch_size: 256

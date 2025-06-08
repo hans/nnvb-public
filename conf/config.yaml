@@ -1,0 +1,61 @@
+defaults:
+  - _self_
+  - dataset: timit_syllables
+  - equivalence: phoneme
+  - base_model: w2v2_6
+  - model: rnn_8
+  - recognition_model: linear
+
+  - override hydra/job_logging: colorlog
+  - override hydra/hydra_logging: colorlog
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: outputs/models/${hydra:job.name}
+
+device: cuda
+
+tokenizer:
+  _target_: transformers.Wav2Vec2CTCTokenizer.from_pretrained
+  pretrained_model_name_or_path: charsiu/tokenizer_en_cmu
+
+feature_extractor:
+  _target_: transformers.Wav2Vec2FeatureExtractor
+  feature_size: 1
+  sampling_rate: 16000
+
+training_args:
+  per_device_train_batch_size: 32
+  eval_strategy: steps
+  save_strategy: steps
+  num_train_epochs: 2
+  gradient_accumulation_steps: 2
+  save_steps: 100
+  eval_steps: 100
+  logging_steps: 10
+  learning_rate: 1e-3
+  save_total_limit: 5
+  logging_first_step: true
+  greater_is_better: false
+  remove_unused_columns: false
+  load_best_model_at_end: true
+  disable_tqdm: true
+  save_safetensors: false
+  label_names:
+    - example_idx
+    - example_class
+
+trainer:
+  mode: train
+  callbacks:
+    - _target_: transformers.EarlyStoppingCallback
+      early_stopping_patience: 3
+
+  hyperparameter_search:
+    n_trials: 200
+    scheduler:
+      _target_: ray.tune.schedulers.ASHAScheduler
+    compute_objective:
+      _target_: src.train_decoder.compute_objective

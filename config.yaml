@@ -1,0 +1,37 @@
+datasets: {}
+
+models:
+
+  # feedforward pseudocausal word contrastive model
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-mAP1
+    equivalence: word_broad_10frames_fixedlen25
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-mAP2
+    equivalence: word_broad_10frames_fixedlen25
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-mAP3
+    equivalence: word_broad_10frames_fixedlen25
+
+  # feedforward pseudocausal phoneme contrastive model
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-phon_mAP1
+    equivalence: phoneme_10frames_fixedlen25
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-phon_mAP2
+    equivalence: phoneme_10frames_fixedlen25
+  - base_model: w2v2_pc_8
+    dataset: librispeech-train-clean-100
+    model: ffff_32-pc-phon_mAP3
+    equivalence: phoneme_10frames_fixedlen25  
+
+  # random baselines
+  - base_model: w2v2_8
+    dataset: librispeech-train-clean-100
+    model: randomff_32
+    equivalence: random

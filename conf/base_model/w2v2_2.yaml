@@ -1,0 +1,4 @@
+name: w2v2_2
+model_ref: facebook/wav2vec2-base
+layer: 2
+pseudo_causal: false

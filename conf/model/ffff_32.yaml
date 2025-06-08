@@ -1,0 +1,10 @@
+hidden_dim: 768
+learning_rate: 0.0010784378128608832
+margin: 0.3759035389808272
+weight_decay: 0.006070874110546381
+
+output_dim: 32
+num_layers: 0
+
+in_batch_soft_negatives: true
+loss_form: hinge

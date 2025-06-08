@@ -1,0 +1,13 @@
+
+# _objective_94138_00017_17_learning_rate=0.0000,margin=0.2074,weight_decay=0.0886_2025-04-22_12-32-51
+hidden_dim: 768
+learning_rate: 1.98702153854286e-05
+margin: 0.20736445177905033
+weight_decay: 0.08862326508576249
+
+
+output_dim: 32
+num_layers: 0
+
+in_batch_soft_negatives: true
+loss_form: hinge

@@ -1,0 +1,5 @@
+_target_: src.utils.timit.load_or_prepare_timit_corpus
+
+name: timit
+processed_data_dir: data/timit_syllables
+raw_data_dir: data/timit_raw

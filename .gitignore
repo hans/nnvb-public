@@ -1,0 +1,24 @@
+*.csv
+*.png
+*.zip
+*.pt
+data
+__pycache__
+*.pyc
+.ipynb_checkpoints
+*.h5
+out
+outputs
+.snakemake
+*.log
+*.pkl
+*.mp4
+*.pdf
+*.parquet
+.vscode
+.DS_Store
+
+# transient notebooks
+202*.ipynb
+# transient dirs
+2024*
